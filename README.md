@@ -122,3 +122,8 @@ In short, `Rostaing OCR` unlocks your documents, making them ready for any moder
 ## License
 
 This project is licensed under the MIT License. See the `LICENSE` file for more details.
+
+## Useful Links
+- Github: https://github.com/Rostaing/rostaing-ocr
+- Pypi: https://pypi.org/project/rostaing-ocr/
+- Linkedin: https://www.linkedin.com/in/davila-rostaing/

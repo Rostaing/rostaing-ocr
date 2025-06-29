@@ -1,8 +1,8 @@
 Metadata-Version: 2.4
 Name: rostaing-ocr
 Version: 0.1.0
-Summary: Un outil OCR pour extraire du texte d'images et de PDF en utilisant Tesseract et PyMuPDF.
-Author-email: Davila Rostaing <davilarostaing@gmail.com>
+Summary: An OCR tool to extract text from scanned and non-scanned images and PDFs.
+Author-email: Davila Rostaing <rostaingdavila@gmail.com>
 Project-URL: Homepage, https://github.com/Rostaing/rostaing-ocr
 Project-URL: Bug Tracker, https://github.com/Rostaing/rostaing-ocr/issues
 Classifier: Programming Language :: Python :: 3
@@ -109,6 +109,9 @@ extractor = RostaingOCR(
     output_basename="my_result", # Optionel
     print_to_console=True # Optionel
 )
+
+# You can print to get a summary of the operation.
+print(extractor)
 
 # --- Example 2: Process multiple files and print to console ---
 # This will process both files, save a consolidated output, and also print the results.
