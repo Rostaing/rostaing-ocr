@@ -127,3 +127,4 @@ This project is licensed under the MIT License. See the `LICENSE` file for more 
 - Github: https://github.com/Rostaing/rostaing-ocr
 - Pypi: https://pypi.org/project/rostaing-ocr/
 - Linkedin: https://www.linkedin.com/in/davila-rostaing/
+- YouTube: youtube.com/@RostaingAI?sub_confirmation=1
