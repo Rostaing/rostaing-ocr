@@ -1,6 +1,6 @@
 # Rostaing OCR, created by Davila Rostaing.
 
-A simple and powerful Python tool for extracting text from images and scanned PDFs. It leverages Tesseract, PyMuPDF, and MarkItDown to produce clean plain text (`.txt`) and Markdown (`.md`) files.
+A Python OCR package for extracting text from scanned and native images or PDFs, designed for integration into AI applications such as LLMs and RAG, and to produce clean plain text (`.txt`) and Markdown (`.md`) files.
 
 ## Features
 
