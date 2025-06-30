@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: rostaing-ocr
-Version: 0.1.0
+Version: 0.1.1
 Summary: An OCR tool to extract text from scanned and non-scanned images and PDFs.
 Author-email: Davila Rostaing <rostaingdavila@gmail.com>
 Project-URL: Homepage, https://github.com/Rostaing/rostaing-ocr
@@ -144,3 +144,9 @@ In short, `Rostaing OCR` unlocks your documents, making them ready for any moder
 ## License
 
 This project is licensed under the MIT License. See the `LICENSE` file for more details.
+
+## Useful Links
+- Github: https://github.com/Rostaing/rostaing-ocr
+- Pypi: https://pypi.org/project/rostaing-ocr/
+- Linkedin: https://www.linkedin.com/in/davila-rostaing/
+- YouTube: [youtube.com/@RostaingAI?sub_confirmation=1](https://youtube.com/@rostaingai?si=b7jqDY4qh3_AMSXE)
