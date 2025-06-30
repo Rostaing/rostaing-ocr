@@ -1,1 +1,3 @@
 *.toml
+dist
+src/rostaing_ocr/*.py
