@@ -41,7 +41,7 @@ python -m venv .venv
 With your virtual environment activated, install the package and its deep learning backend (PyTorch) from PyPI with one simple command:
 ```bash
 # This installs the main library and the PyTorch backend
-pip install "rostaing-ocr[torch]"
+pip install rostaing-ocr
 ```
 
 ### Note: The first time you run the extractor, easyocr will automatically download the necessary language models. This may take a moment and requires an internet connection. This is a one-time process.
