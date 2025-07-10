@@ -1,55 +1,27 @@
 # Rostaing OCR, created by Davila Rostaing.
 
-A Python OCR package for extracting text from scanned and native images or PDFs, designed for integration into AI applications such as LLMs and RAG, and to produce clean plain text (`.txt`) and Markdown (`.md`) files.
+An advanced, pure-Python OCR package for extracting text from PDFs and images. It is specifically designed to **preserve the original document's vertical reading order**, making it ideal for integration into AI applications like LLMs and RAG pipelines.
 
-## Features
+This tool produces clean plain text (`.txt`) and Markdown (`.md`) files **without requiring any external software installation** like Tesseract.
 
--   Converts images (PNG, JPG, etc.) and PDFs into text.
--   Includes image preprocessing (grayscale conversion) to improve OCR accuracy.
--   Processes multiple files in a single run, consolidating the output.
--   Generates output in both plain text (`.txt`) and Markdown (`.md`) formats.
--   Optional flag to print extracted content directly to the console for quick inspection.
+## Key Features
 
-## System Prerequisites: Tesseract OCR
-
-**Important:** This package requires the **Tesseract OCR engine** to be installed on your system. `rostaing-ocr` is a Python wrapper that calls the `tesseract` command-line tool. You must install it and its language packs first.
-
-### Windows Installation Guide (Recommended)
-
-1.  **Download the Installer**: Go to the official [Tesseract at UB Mannheim](https://github.com/UB-Mannheim/tesseract/wiki) repository. They provide the most up-to-date and reliable installers for Windows.
-2.  **Run the Installer**: Start the installation process.
-3.  **Crucial Step - Add to PATH**: On the "Select Additional Tasks" screen, make sure to check the box for **"Add Tesseract to system PATH"**. This is essential for Python to be able to find and execute Tesseract.
-4.  **Select Languages**: On the "Select additional language data" screen, expand the list and select the languages you will need for OCR (e.g., check `French` for `fra`, `English` is usually included by default).
-5.  **Complete Installation**: Finish the installation and, to be safe, restart your command prompt, terminal, or IDE to ensure the system's PATH variable is updated.
-
-### macOS (via Homebrew)
-
-```bash
-brew install tesseract
-```
-You can add language packs by installing `tesseract-lang`.
-
-### Linux (Debian/Ubuntu)
-
-```bash
-sudo apt update
-sudo apt install tesseract-ocr
-
-# Also install the language packs you need. For French:
-sudo apt install tesseract-ocr-fra
-```
+-   ✨ **Zero External Dependencies**: Unlike wrappers for Tesseract, `rostaing-ocr` is 100% Python. Just `pip install` and you're ready to go.
+-   🧠 **Layout-Aware Extraction**: **Preserves the vertical reading order** of documents. Text from a header image will appear before the body text, and a footer will appear last, creating a logically coherent output.
+-   🚀 **High-Accuracy Deep Learning OCR**: Powered by **EasyOCR**, it delivers excellent results on both scanned and digital documents.
+-   📄 **Handles Mixed Content**: Intelligently extracts text from both the text layer of a PDF and the text embedded within images on the same page.
+-   ⚙️ **Versatile Input**: Processes single or multiple files (PDFs, PNGs, JPGs, etc.) in a single run.
+-   📦 **Flexible Output**: Generates both clean text (`.txt`) and structured Markdown (`.md`) files and can print results directly to the console.
 
 ## Installation
 
 ### Best Practice: Use a Virtual Environment
 
-To keep project dependencies isolated and avoid conflicts with other Python projects on your system, it is highly recommended to use a virtual environment.
-
-With a standard Python installation, you can create and activate a new environment using the following commands:
+To keep project dependencies isolated, using a virtual environment is highly recommended.
 
 **On macOS/Linux:**
 ```bash
-# Create an environment named '.venv' in your project directory
+# Create an environment named '.venv'
 python3 -m venv .venv
 
 # Activate the environment
@@ -58,73 +30,72 @@ source .venv/bin/activate
 
 **On Windows:**
 ```bash
-# Create an environment named '.venv' in your project directory
+# Create an environment named '.venv'
 python -m venv .venv
 
 # Activate the environment
 .venv\Scripts\activate
 ```
 
-### Install the Package
-
-Once Tesseract is set up and your virtual environment is activated, you can install the package from PyPI:
-
+## Install the Package
+With your virtual environment activated, install the package and its deep learning backend (PyTorch) from PyPI with one simple command:
 ```bash
-pip install rostaing-ocr
+# This installs the main library and the PyTorch backend
+pip install "rostaing-ocr[torch]"
 ```
 
+### Note: The first time you run the extractor, easyocr will automatically download the necessary language models. This may take a moment and requires an internet connection. This is a one-time process.
+
 ## Usage
+Using the library is designed to be simple. The extraction process starts immediately upon creating an instance of the RostaingExtractor class.
 
-Here is a basic example of how to use the `RostaingOCR` class.
-
-```python
 from rostaing_ocr import RostaingOCR
 
-# --- Example 1: Process a single file ---
-# This will create 'my_result.txt' and 'my_result.md' in the current directory.
+# --- Example 1: Simple processing of a single file ---
+# This creates 'output.md' and 'output.txt' with the extracted content.
+```bash
 extractor = RostaingOCR(
-    input_path_or_paths="path/to/my_document.pdf",
-    output_basename="my_result", # Optionel
-    print_to_console=True # Optionel
+    "path/to/my_document.pdf", 
+    print_to_console=True # Optional: see results in the terminal
 )
 
-# You can print to get a summary of the operation.
+# Print the object to get a summary of the operation.
 print(extractor)
+```
 
-# --- Example 2: Process multiple files and print to console ---
-# This will process both files, save a consolidated output, and also print the results.
+# --- Example 2: Advanced processing of multiple files ---
+# This processes two files, customizes the output name, specifies languages,
+# and prints the full content to the console.
+```bash
 multi_extractor = RostaingOCR(
-    input_path_or_paths=["document1.png", "scan_page_2.pdf"],
-    output_basename="combined_report", # Optionel
-    print_to_console=True, # Optionel
-    languages=['fra', 'eng'] # Specify languages for Tesseract # Optionel
+    input_path_or_paths=["report.pdf", "receipt.jpg"],
+    output_basename="combined_report", # Optional: custom name for output files
+    print_to_console=True,             # Optional: see results in the terminal
+    ocr_lang=['fr', 'en'],             # Optional: specify languages for OCR
+    perform_ocr=True                   # Optional: OCR is enabled by default
 )
 
-# You can print the object to get a summary of the operation.
 print(multi_extractor)
 ```
 
 ## Application for LLM and RAG Pipelines
-
 Large Language Models (LLMs) like GPT-4 or Llama understand text, not images or scanned documents. A vast amount of valuable knowledge is locked away in unstructured formats such as PDFs of research papers, scanned invoices, or legal contracts.
+rostaing-ocr serves as the crucial first step in any data ingestion pipeline for Retrieval-Augmented Generation (RAG) systems. By converting visual data into clean, semantically ordered text, it unlocks this data for LLMs. The layout-aware extraction ensures that the context (e.g., a title appearing before a paragraph) is maintained, leading to better performance in RAG systems.
 
-**`Rostaing OCR` serves as the crucial first step in any data ingestion pipeline for Retrieval-Augmented Generation (RAG) systems.** It bridges the gap by converting this inaccessible visual data into clean, structured text that LLMs can process.
+A typical workflow:
 
-By using `Rostaing OCR`, you can automate the process of building a knowledge base from your documents:
+1. Input: A directory of PDFs or Images.
+2. Extraction (rostaing-ocr): Convert all documents into clean, logically ordered Markdown/Text.
+3. Processing: The text output can be fed into text splitters and then embedding models.
+4. Indexing: The resulting vectors are stored in a vector database (e.g., Chroma, Pinecone, FAISS) for efficient retrieval.
 
-1.  **Input**: A directory of `Scanned PDFs` or `Images`.
-2.  **Extraction (Rostaing OCR)**: Convert all documents into clean `Markdown/Text`.
-3.  **Processing**: The text output can be fed into text splitters and then embedding models.
-4.  **Indexing**: The resulting vectors are stored in a vector database (e.g., Chroma, Pinecone, FAISS) for efficient retrieval.
-
-In short, `Rostaing OCR` unlocks your documents, making them ready for any modern AI stack.
+In short, rostaing-ocr unlocks your documents, making them ready for any modern AI stack.
 
 ## License
-
-This project is licensed under the MIT License. See the `LICENSE` file for more details.
+This project is licensed under the MIT License. See the LICENSE file for more details.
 
 ## Useful Links
 - Github: https://github.com/Rostaing/rostaing-ocr
-- Pypi: https://pypi.org/project/rostaing-ocr/
-- Linkedin: https://www.linkedin.com/in/davila-rostaing/
-- YouTube: [youtube.com/@RostaingAI?sub_confirmation=1](https://youtube.com/@rostaingai?si=b7jqDY4qh3_AMSXE)
+- PyPI: https://pypi.org/project/rostaing-ocr/
+- LinkedIn: https://www.linkedin.com/in/davila-rostaing/
+- YouTube: youtube.com/@RostaingAI
