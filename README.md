@@ -44,13 +44,13 @@ With your virtual environment activated, install the package and its deep learni
 pip install rostaing-ocr
 ```
 
-### Note: The first time you run the extractor, easyocr will automatically download the necessary language models. This may take a moment and requires an internet connection. This is a one-time process.
+**Note:** The first time you run the extractor, easyocr will automatically download the necessary language models. This may take a moment and requires an internet connection. This is a one-time process.
 
 ## Usage
 Using the library is designed to be simple. The extraction process starts immediately upon creating an instance of the RostaingExtractor class.
 
 ## --- Example 1: Simple processing of a single file ---
-### This creates 'output.md' and 'output.txt' with the extracted content.
+This creates 'output.md' and 'output.txt' with the extracted content.
 ```bash
 from rostaing_ocr import RostaingOCR
 
@@ -65,7 +65,7 @@ print(extractor)
 ```
 
 ## --- Example 2: Advanced processing of multiple files ---
-### This processes two files, customizes the output name, specifies languages, and prints the full content to the console.
+This processes two files, customizes the output name, specifies languages, and prints the full content to the console.
 ```bash
 from rostaing_ocr import RostaingOCR
 
