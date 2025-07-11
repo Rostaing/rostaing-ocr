@@ -47,7 +47,7 @@ pip install rostaing-ocr
 **Note:** The first time you run the extractor, **rostaing-ocr** will automatically download the necessary language models. This may take a moment and requires an internet connection. This is a one-time process.
 
 ## Usage
-Using the library is designed to be simple. The extraction process starts immediately upon creating an instance of the RostaingExtractor class.
+Using the library is designed to be simple. The extraction process starts immediately upon creating an instance of the RostaingOCR class.
 
 ## --- Example 1: Simple processing of a single file ---
 This creates 'output.md' and 'output.txt' with the extracted content.
