@@ -44,7 +44,7 @@ With your virtual environment activated, install the package and its deep learni
 pip install rostaing-ocr
 ```
 
-**Note:** The first time you run the extractor, easyocr will automatically download the necessary language models. This may take a moment and requires an internet connection. This is a one-time process.
+**Note:** The first time you run the extractor, **rostaing-ocr** will automatically download the necessary language models. This may take a moment and requires an internet connection. This is a one-time process.
 
 ## Usage
 Using the library is designed to be simple. The extraction process starts immediately upon creating an instance of the RostaingExtractor class.
