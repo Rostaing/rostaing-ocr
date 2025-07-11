@@ -1,4 +1,28 @@
-## Rostaing OCR, created by Davila Rostaing.
+Metadata-Version: 2.4
+Name: rostaing-ocr
+Version: 0.3.0
+Summary: An advanced OCR tool for extracting text from both scanned and non-scanned PDFs, as well as images, while preserving the original vertical reading order. Designed for integration into AI applications such as LLMs and RAG systems, it outputs clean plain text (.txt) and Markdown (.md) files.
+Author-email: Davila Rostaing <rostaingdavila@gmail.com>
+Project-URL: Homepage, https://github.com/Rostaing/rostaing-ocr
+Project-URL: Bug Tracker, https://github.com/Rostaing/rostaing-ocr/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Text Processing :: General
+Classifier: Topic :: Scientific/Engineering :: Image Recognition
+Classifier: Intended Audience :: Developers
+Classifier: Development Status :: 4 - Beta
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: PyMuPDF>=1.23.0
+Requires-Dist: Pillow>=9.0.0
+Requires-Dist: python-doctr>=0.8.1
+Requires-Dist: torch>=1.8.0
+Requires-Dist: torchvision>=0.9.0
+Dynamic: license-file
+
+# Rostaing OCR, created by Davila Rostaing.
 
 An advanced, pure-Python OCR package for extracting text from PDFs and images. It is specifically designed to **preserve the original document's vertical reading order**, making it ideal for integration into AI applications like LLMs and RAG pipelines.
 
@@ -8,7 +32,7 @@ This tool produces clean plain text (`.txt`) and Markdown (`.md`) files **withou
 
 -   ✨ **Zero External Dependencies**: Unlike wrappers for Tesseract, `rostaing-ocr` is 100% Python. Just `pip install` and you're ready to go.
 -   🧠 **Layout-Aware Extraction**: **Preserves the vertical reading order** of documents. Text from a header image will appear before the body text, and a footer will appear last, creating a logically coherent output.
--   🚀 **High-Accuracy Deep Learning OCR**: It delivers excellent results on both scanned and digital documents.
+-   🚀 **High-Accuracy Deep Learning OCR**: Powered by **EasyOCR**, it delivers excellent results on both scanned and digital documents.
 -   📄 **Handles Mixed Content**: Intelligently extracts text from both the text layer of a PDF and the text embedded within images on the same page.
 -   ⚙️ **Versatile Input**: Processes single or multiple files (PDFs, PNGs, JPGs, etc.) in a single run.
 -   📦 **Flexible Output**: Generates both clean text (`.txt`) and structured Markdown (`.md`) files and can print results directly to the console.
@@ -49,26 +73,24 @@ pip install rostaing-ocr
 ## Usage
 Using the library is designed to be simple. The extraction process starts immediately upon creating an instance of the RostaingExtractor class.
 
-## --- Example 1: Simple processing of a single file ---
-### This creates 'output.md' and 'output.txt' with the extracted content.
-```bash
 from rostaing_ocr import RostaingOCR
 
+# --- Example 1: Simple processing of a single file ---
+# This creates 'output.md' and 'output.txt' with the extracted content.
+```bash
 extractor = RostaingOCR(
     "path/to/my_document.pdf", 
     print_to_console=True # Optional: see results in the terminal
-    output_basename="combined_report", # Optional: custom name for output files
 )
 
 # Print the object to get a summary of the operation.
 print(extractor)
 ```
 
-## --- Example 2: Advanced processing of multiple files ---
-### This processes two files, customizes the output name, specifies languages, and prints the full content to the console.
+# --- Example 2: Advanced processing of multiple files ---
+# This processes two files, customizes the output name, specifies languages,
+# and prints the full content to the console.
 ```bash
-from rostaing_ocr import RostaingOCR
-
 multi_extractor = RostaingOCR(
     input_path_or_paths=["report.pdf", "receipt.jpg"],
     output_basename="combined_report", # Optional: custom name for output files
@@ -100,4 +122,4 @@ This project is licensed under the MIT License. See the LICENSE file for more de
 - Github: https://github.com/Rostaing/rostaing-ocr
 - PyPI: https://pypi.org/project/rostaing-ocr/
 - LinkedIn: https://www.linkedin.com/in/davila-rostaing/
-- YouTube: [youtube.com/@RostaingAI](https://youtube.com/@rostaingai?si=8wo5H5Xk4i0grNyH)
+- YouTube: youtube.com/@RostaingAI
