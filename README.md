@@ -1,125 +1,109 @@
-# Rostaing OCR
+<p align="center">
+  <a href="https://pypi.org/project/rostaing-ocr/"><img src="https://img.shields.io/pypi/v/rostaing-ocr?color=blue&label=PyPI%20version" alt="PyPI version"></a>
+  <a href="https://pypi.org/project/rostaing-ocr/"><img src="https://img.shields.io/pypi/pyversions/rostaing-ocr.svg" alt="Python versions"></a>
+  <a href="https://github.com/Rostaing/rostaing-ocr/blob/main/LICENSE"><img src="https://img.shields.io/pypi/l/rostaing-ocr.svg" alt="License"></a>
+  <a href="https://pepy.tech/project/rostaing-ocr"><img src="https://static.pepy.tech/badge/rostaing-ocr" alt="Downloads"></a>
+</p>
 
-[![PyPI version](https://img.shields.io/pypi/v/rostaing-ocr.svg)](https://pypi.org/project/rostaing-ocr/)
-[![Python versions](https://img.shields.io/pypi/pyversions/rostaing-ocr.svg)](https://pypi.org/project/rostaing-ocr/)
-[![PyPI license](https://img.shields.io/pypi/l/rostaing-ocr.svg)](https://pypi.org/project/rostaing-ocr/)
-[![PyPI downloads](https://img.shields.io/pypi/dm/rostaing-ocr.svg)](https://pypi.org/project/rostaing-ocr/)
+# rostaing-ocr
 
-**An advanced semantic OCR tool that extracts structured content (titles, paragraphs, lists, and tables) from PDFs and images. Optimized for AI, LLMs, and RAG systems.**
+**High-Precision OCR Extraction for LLMs and RAG Systems**
 
-Created by Davila Rostaing.
+`rostaing-ocr` is a robust Python library designed to extract text from PDFs and images with high visual fidelity. Unlike standard text extraction tools, this library converts every document page into a high-resolution image before processing. This ensures that the layout (columns, tables) is preserved and that text hidden in complex PDF structures is captured correctly.
 
-## Key Features
+It is specifically optimized for **Retrieval-Augmented Generation (RAG)** pipelines where maintaining the visual structure of data (like tables) is critical for LLM comprehension.
 
--   ✨ **Semantic Layout Analysis**: Doesn't just extract text—it understands the document's structure. It identifies titles, paragraphs, lists, and tables for a perfectly formatted output.
--   🧠 **Advanced Table Recognition**: Intelligently identifies table structures, infers missing headers using data-type analysis, and generates a dual output: **Markdown** (for readability) and structured data (for analysis by AI).
--   🚀 **High-Accuracy OCR**: It delivers excellent accuracy on both scanned and digital documents.
--   📦 **Flexible Installation**: A lightweight core with optional AI dependencies. Install only what you need.
--   📄 **Handles Mixed Content**: Intelligently extracts text from both the text layers and embedded images within PDFs.
--   ⚙️ **Versatile Input**: Processes single or multiple files (PDF, PNG, JPG, etc.) in a single run.
--   🔗 **Feature Extraction**: Automatically detects and extracts URLs and signatures (experimental) present in the document.
+## Features
+
+- **Universal Image Conversion:** Converts PDF pages to images to bypass encoding errors.
+- **Layout Preservation:** Smart algorithms detect columns and tables to insert spacing, keeping data aligned for LLMs.
+- **Robust Windows Support:** Handles file permissions and temporary file cleanup gracefully.
+- **Auto-Overwrite:** By default, saves to `output.txt` and overwrites it on each run (configurable).
+- **Privacy Focused:** Temporary images are generated locally and strictly deleted after extraction.
 
 ## Installation
 
-### Best Practice: Use a Virtual Environment
-
-To keep project dependencies isolated, using a virtual environment is highly recommended.
-
-**On macOS/Linux:**
-```bash
-# Create an environment named '.venv'
-python3 -m venv .venv
-
-# Activate the environment
-source .venv/bin/activate
-```
-
-**On Windows:**
-```bash
-# Create an environment named '.venv'
-python -m venv .venv
-
-# Activate the environment
-.venv\Scripts\activate
-```
-
-### Prerequisites
--   Python 3.9 or higher.
--   Using a virtual environment is highly recommended.
-
-### Installation Instructions
-Installation is a two-step process to provide maximum flexibility.
-
-**1. Install the Core Library:**
-This command is lightweight and fast. It installs all the package's processing logic.
 ```bash
 pip install rostaing-ocr
 ```
 
-**2. Install the AI Backend:**
-To perform the image analysis and OCR, you must install the AI dependencies. This is a heavier installation that downloads the required deep learning models.
-```bash
-pip install "rostaing-ocr[torch]"
-```
-**Note:** The first time you run the extractor, the AI models will be downloaded. This may take a moment and requires an internet connection. This is a one-time process.
+## Dependencies
+
+This package relies on:
+- `rostaing-ocr` (OCR engine)
+- `pymupdf` (PDF processing)
+- `pillow` (Image handling)
+- `numpy`
 
 ## Usage
-Using the library is simple. The extraction process starts as soon as you create an instance of the `RostaingOCR` class.
 
-### --- Example 1: Simple Processing of a Single File ---
-This example creates `output.md` and `output.txt` with the extracted semantic content.
-
-```python
-from rostaing_ocr import RostaingOCR
-
-# Extraction is launched on initialization
-extractor = RostaingOCR(
-    "path/to/my_document.pdf",
-    output_basename="document_report", # Custom name for output files
-    print_to_console=True              # Optional: display results in the terminal
-)
-
-# Print a summary of the operation
-print(extractor)
-```
-
-### --- Example 2: Advanced Processing of Multiple Files ---
-This example processes a PDF and an image, specifies French and English as languages, and saves image assets to a separate folder.
+### 1. Basic Usage (Default Behavior)
+By default, the extractor prints to the console and saves the result to `output.txt`, overwriting any previous content.
 
 ```python
-from rostaing_ocr import RostaingOCR
+from rostaing_ocr import ocr_extractor
 
-multi_file_extractor = RostaingOCR(
-    input_path_or_paths=["annual_report.pdf", "invoice.jpg"],
-    output_basename="combined_report", # Optional
-    print_to_console=True              # Optional: display results in the terminal
-    save_images_externally=True,       # Saves detected signatures, etc.
-    languages=['fra', 'eng']           # Specify languages for better accuracy
-    image_dpi= 300,                    # Optional : default --> 300
-)
+# This immediately runs the extraction
+extractor = ocr_extractor("documents/invoice.pdf")
 
-print(multi_file_extractor)
+# The text is now in 'output.txt' and printed to the console
+print(extractor) # Prints the summary (status, time, pages)
 ```
 
-## Application for LLM and RAG Pipelines
-Large Language Models (LLMs) need clean, structured data. `rostaing-ocr` is the crucial first step in any data ingestion pipeline for Retrieval-Augmented Generation (RAG) systems.
+### 2. Custom Output File
+You can specify a different filename. The file will be created or overwritten.
 
-By converting visual documents (scanned PDFs, invoices, contracts) into semantic Markdown, it prepares the data for AI. The structure (titles, paragraphs) is preserved, which dramatically improves the quality of answers in RAG systems.
+```python
+from rostaing_ocr import ocr_extractor
 
-**Typical Workflow:**
+extractor = ocr_extractor(
+    "data/report.png",
+    output_file="results/report_analysis.txt"
+)
+```
 
-1.  **Input**: A set of PDFs or images.
-2.  **Extraction (rostaing-ocr)**: Convert all documents into structured Markdown.
-3.  **Processing**: The text and table are fed into text splitters and embedding models.
-4.  **Indexing**: The resulting vectors are stored in a vector database (e.g., Chroma, Pinecone, FAISS, etc) for efficient retrieval.
+### 3. Silent Mode (No Console Output)
+Useful for batch processing where you only want the text saved to files, not cluttering your terminal.
 
-In short, `rostaing-ocr` unlocks your documents, making them ready for any modern AI stack.
+```python
+from rostaing_ocr import ocr_extractor
 
-## License
-This project is licensed under the MIT License. See the `LICENSE` file for more details.
+extractor = ocr_extractor(
+    "financial_statement.pdf",
+    print_to_console=False,
+    save_file=True
+)
+```
 
-## Useful Links
--   **GitHub**: [https://github.com/Rostaing/rostaing-ocr](https://github.com/Rostaing/rostaing-ocr)
--   **PyPI**: [https://pypi.org/project/rostaing-ocr/](https://pypi.org/project/rostaing-ocr/)
--   **LinkedIn**: [https://www.linkedin.com/in/davila-rostaing/](https://www.linkedin.com/in/davila-rostaing/)
--   **YouTube**: [youtube.com/@RostaingAI](https://youtube.com/@rostaingai?si=8wo5H5Xk4i0grNyH)
+### 4. Direct Text Access
+You can access the extracted text directly in your Python code without reading the file.
+
+```python
+from rostaing_ocr import ocr_extractor
+
+extractor = ocr_extractor("scan.jpg", print_to_console=False)
+
+if extractor.status == "Success":
+    my_text = extractor.extracted_text
+    # Send 'my_text' to ChatGPT or your RAG system...
+```
+
+## CLI Usage
+
+You can also use it directly from the terminal:
+
+```bash
+# Basic
+python -m rostaing_ocr path/to/document.pdf
+
+# With arguments (if you implement an entry point in the future)
+```
+
+## Architecture
+
+1. **Input:** PDF or Image (PNG, JPG, TIFF, etc.).
+2. **Preprocessing:** PDF pages are rendered as high-DPI images into a local temporary folder.
+3. **Extraction:** `RostaingOCR` reads the image.
+4. **Layout Reconstruction:** The custom algorithm sorts text blocks vertically and horizontally, calculating gaps to simulate table columns with spaces.
+5. **Cleanup:** Temporary images are forcibly deleted (with retry logic for Windows).
+6. **Output:** Clean text string.
