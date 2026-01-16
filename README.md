@@ -7,19 +7,19 @@
 
 # rostaing-ocr
 
-**High-Precision OCR Extraction for LLMs and RAG Systems**
+**Production-Grade Layout-Aware OCR for LLMs and RAG Systems**
 
-`rostaing-ocr` is a robust Python library designed to extract text from PDFs and images with high visual fidelity. Unlike standard text extraction tools, this library converts every document page into a high-resolution image before processing. This ensures that the layout (columns, tables) is preserved and that text hidden in complex PDF structures is captured correctly.
+`rostaing-ocr` is a high-performance Python library designed to extract text from PDFs, Scanned PDFs, and images while **preserving complex layouts**. Unlike standard OCR tools that output a "soup" of words, this library uses **Deep Learning** and geometric reconstruction to maintain tables, columns, and document structure.
 
-It is specifically optimized for **Retrieval-Augmented Generation (RAG)** pipelines where maintaining the visual structure of data (like tables) is critical for LLM comprehension.
+It is specifically optimized for **Retrieval-Augmented Generation (RAG)** pipelines where maintaining the visual structure of data (like invoice tables) is critical for LLM comprehension.
 
-## Features
+## Key Features
 
-- **Universal Image Conversion:** Converts PDF pages to images to bypass encoding errors.
-- **Layout Preservation:** Smart algorithms detect columns and tables to insert spacing, keeping data aligned for LLMs.
-- **Robust Windows Support:** Handles file permissions and temporary file cleanup gracefully.
-- **Auto-Overwrite:** By default, saves to `output.txt` and overwrites it on each run (configurable).
-- **Privacy Focused:** Temporary images are generated locally and strictly deleted after extraction.
+- **mj-layout-aware:** Uses geometric clustering to reconstruct tables and columns. Data stays on the correct line, visually aligned.
+- **🧹 Noise Filtering:** Automatically detects and removes low-confidence text such as **messy handwriting, signatures, and stamps** to keep the output clean.
+- **⚡ Local Processing:** Runs 100% locally (CPU or GPU). No external APIs, no data leaving your server.
+- **📄 Universal Input:** Handles PDFs (digital & scanned) and common image formats via a robust Base64 architecture.
+- **🔒 Privacy Focused:** Temporary files are handled securely and deleted immediately after extraction.
 
 ## Installation
 
@@ -27,31 +27,32 @@ It is specifically optimized for **Retrieval-Augmented Generation (RAG)** pipeli
 pip install rostaing-ocr
 ```
 
-## Dependencies
+<!-- ## Dependencies -->
 
-This package relies on:
-- `rostaing-ocr` (OCR engine)
-- `pymupdf` (PDF processing)
-- `pillow` (Image handling)
-- `numpy`
+<!-- This package relies on modern Deep Learning libraries:
+- `python-doctr[torch]` (The OCR Engine) -->
+<!-- - `pymupdf` (PDF rendering)
+- `numpy` (Matrix operations) -->
+
+*(Note: The first run will automatically download the necessary OCR models ~300MB)*
 
 ## Usage
 
 ### 1. Basic Usage (Default Behavior)
-By default, the extractor prints to the console and saves the result to `output.txt`, overwriting any previous content.
+By default, the extractor prints the result to the console and saves it to `output.txt`.
 
 ```python
 from rostaing_ocr import ocr_extractor
 
-# This immediately runs the extraction
+# This immediately runs the extraction using DocTR
 extractor = ocr_extractor("documents/invoice.pdf")
 
-# The text is now in 'output.txt' and printed to the console
-print(extractor) # Prints the summary (status, time, pages)
+# The extracted text is now in 'output.txt'
+print(extractor) # Prints status summary (Time taken, pages processed)
 ```
 
 ### 2. Custom Output File
-You can specify a different filename. The file will be created or overwritten.
+You can specify a different filename. The file will be created or overwritten automatically.
 
 ```python
 from rostaing_ocr import ocr_extractor
@@ -62,8 +63,8 @@ extractor = ocr_extractor(
 )
 ```
 
-### 3. Silent Mode (No Console Output)
-Useful for batch processing where you only want the text saved to files, not cluttering your terminal.
+### 3. Silent Mode (Background Processing)
+Useful for batch processing or server backends where you don't want console logs.
 
 ```python
 from rostaing_ocr import ocr_extractor
@@ -75,8 +76,8 @@ extractor = ocr_extractor(
 )
 ```
 
-### 4. Direct Text Access
-You can access the extracted text directly in your Python code without reading the file.
+### 4. Direct Integration (RAG Pipelines)
+Access the text variable directly without reading the file.
 
 ```python
 from rostaing_ocr import ocr_extractor
@@ -84,26 +85,21 @@ from rostaing_ocr import ocr_extractor
 extractor = ocr_extractor("scan.jpg", print_to_console=False)
 
 if extractor.status == "Success":
-    my_text = extractor.extracted_text
-    # Send 'my_text' to ChatGPT or your RAG system...
+    clean_text = extractor.extracted_text
+    # Send 'clean_text' to GPT-4, Mistral, Gemini, Claude, Grok, Llama... or your Vector DB
 ```
 
-## CLI Usage
+## How It Works (Architecture)
 
-You can also use it directly from the terminal:
+1. **Input Normalization:** Converts PDF pages or Images into High-Res Base64 streams.
+2. **Deep Learning Inference:** DBNet for detection + CRNN for recognition.
+3. **Noise Filtering:** Scans confidence scores. Text with low confidence (e.g., `< 0.4`), such as signatures or stamps, is discarded.
+4. **Geometric Reconstruction:**
+   - Flattens the document hierarchy.
+   - Clusters words into visual lines based on Y-axis alignment.
+   - Calculates horizontal gaps to insert dynamic spacing (tabs vs spaces) to simulate columns.
+5. **Output:** Returns a clean, structured string that looks like the original document.
 
-```bash
-# Basic
-python -m rostaing_ocr path/to/document.pdf
+## License
 
-# With arguments (if you implement an entry point in the future)
-```
-
-## Architecture
-
-1. **Input:** PDF or Image (PNG, JPG, TIFF, etc.).
-2. **Preprocessing:** PDF pages are rendered as high-DPI images into a local temporary folder.
-3. **Extraction:** `RostaingOCR` reads the image.
-4. **Layout Reconstruction:** The custom algorithm sorts text blocks vertically and horizontally, calculating gaps to simulate table columns with spaces.
-5. **Cleanup:** Temporary images are forcibly deleted (with retry logic for Windows).
-6. **Output:** Clean text string.
+MIT License

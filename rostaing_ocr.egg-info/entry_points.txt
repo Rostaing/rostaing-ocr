@@ -1,2 +1,0 @@
-[console_scripts]
-rostaing-ocr = rostaing_ocr.rostaing_ocr:main

@@ -1,4 +1,7 @@
 .vscode
 rostaing_ocr/
 setup.py
+MANIFEST.in
 requirements.txt
+dist
+rostaing_ocr.egg-info/
