@@ -5,11 +5,11 @@
   <a href="https://pepy.tech/project/rostaing-ocr"><img src="https://static.pepy.tech/badge/rostaing-ocr" alt="Downloads"></a>
 </p>
 
-# rostaing-ocr
+# RostaingOCR
 
 **Production-Grade Layout-Aware OCR for LLMs and RAG Systems**
 
-`rostaing-ocr` is a high-performance Python library designed to extract text from PDFs, Scanned PDFs, and images while **preserving complex layouts**. Unlike standard OCR tools that output a "soup" of words, this library uses **Deep Learning** and geometric reconstruction to maintain tables, columns, and document structure.
+`RostaingOCR` is a high-performance Python library designed to extract text from PDFs, Scanned PDFs, and images while **preserving complex layouts**. Unlike standard OCR tools that output a "soup" of words, this library uses **Deep Learning** and geometric reconstruction to maintain tables, columns, and document structure.
 
 It is specifically optimized for **Retrieval-Augmented Generation (RAG)** pipelines where maintaining the visual structure of data (like invoice tables) is critical for LLM comprehension.
 
@@ -86,7 +86,7 @@ extractor = ocr_extractor("scan.jpg", print_to_console=False)
 
 if extractor.status == "Success":
     clean_text = extractor.extracted_text
-    # Send 'clean_text' to GPT-4, Mistral, Gemini, Claude, Grok, Llama... or your Vector DB
+    # Send 'clean_text' to GPT, Mistral, Gemini, Claude, Grok, Groq, Llama... or your Vector DB
 ```
 
 ## How It Works (Architecture)
@@ -103,3 +103,9 @@ if extractor.status == "Success":
 ## License
 
 MIT License
+
+## Useful Links
+- [Author's LinkedIn](https://www.linkedin.com/in/davila-rostaing/)
+- [Author's YouTube Channel](https://youtube.com/@RostaingAI?sub_confirmation=1)
+- [GitHub Repository](https://github.com/Rostaing/rostaing-ocr)
+- [PyPI Project Page](https://pypi.org/project/rostaing-ocr/)
